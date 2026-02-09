@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worksuvash OS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="boot-screen">
+        <div class="boot-content">
+            <h1>WORKSUVASH OS</h1>
+            <div class="boot-progress">
+                <div class="boot-bar"></div>
+            </div>
+            <p class="boot-text">Initializing system...</p>
+        </div>
+    </div>
+
+    <div id="desktop" class="hidden">
+        <div class="taskbar">
+            <div class="taskbar-left">
+                <button class="start-button" id="startBtn">
+                    <span class="start-icon">⚡</span>
+                    <span>Start</span>
+                </button>
+                <div class="taskbar-apps" id="taskbarApps"></div>
+            </div>
+            <div class="taskbar-right">
+                <div class="system-tray">
+                    <span id="clock">00:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="start-menu hidden" id="startMenu">
+            <div class="start-menu-header">
+                <h3>Worksuvash OS</h3>
+            </div>
+            <div class="start-menu-apps">
+                <div class="app-item" data-app="file-manager">
+                    <span class="app-icon">📁</span>
+                    <span>File Manager</span>
+                </div>
+                <div class="app-item" data-app="terminal">
+                    <span class="app-icon">💻</span>
+                    <span>Terminal</span>
+                </div>
+                <div class="app-item" data-app="notepad">
+                    <span class="app-icon">📝</span>
+                    <span>Notepad</span>
+                </div>
+                <div class="app-item" data-app="calculator">
+                    <span class="app-icon">🔢</span>
+                    <span>Calculator</span>
+                </div>
+                <div class="app-item" data-app="browser">
+                    <span class="app-icon">🌐</span>
+                    <span>Web Browser</span>
+                </div>
+                <div class="app-item" data-app="settings">
+                    <span class="app-icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+            <div class="start-menu-footer">
+                <button id="shutdownBtn">🔴 Shutdown</button>
+            </div>
+        </div>
+
+        <div class="desktop-icons">
+            <div class="desktop-icon" data-app="file-manager">
+                <span class="desktop-icon-img">📁</span>
+                <span class="desktop-icon-label">Files</span>
+            </div>
+            <div class="desktop-icon" data-app="terminal">
+                <span class="desktop-icon-img">💻</span>
+                <span class="desktop-icon-label">Terminal</span>
+            </div>
+            <div class="desktop-icon" data-app="notepad">
+                <span class="desktop-icon-img">📝</span>
+                <span class="desktop-icon-label">Notepad</span>
+            </div>
+        </div>
+
+        <div id="windows-container"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
