@@ -9,6 +9,9 @@ import packageJson from './package.json';
 export default defineConfig({
   base: './',
   clearScreen: false,
+  define: {
+    'import.meta.env.VITE_OPENROUTER_API_KEY': JSON.stringify(process.env.OPENAI_API_KEY || ''),
+  },
   plugins: [
     react(),
     {
