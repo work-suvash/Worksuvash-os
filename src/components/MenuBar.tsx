@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, memo } from 'react';
 import pkg from '../../package.json';
 import { Orbit } from 'lucide-react';
 import { useThemeColors } from '@/hooks/useThemeColors';
-import { useFullscreen } from '@/hooks/useFullscreen';
 import { CreditsDrawer } from '@/components/Credits/CreditsDrawer';
 import { cn } from '@/components/ui/utils';
 import { useAppContext } from '@/components/AppContext';
@@ -20,12 +19,10 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarSeparator,
-  MenubarShortcut,
 } from '@/components/ui/menubar';
 import { Badge } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
-import { getApp } from '@/config/appRegistry';
 import { useI18n } from '@/i18n/index';
 
 interface MenuBarProps {
@@ -33,7 +30,7 @@ interface MenuBarProps {
   onOpenApp?: (type: string, data?: any, owner?: string) => void;
 }
 
-function MenuBarComponent({ focusedApp, onOpenApp }: MenuBarProps) {
+function MenuBarComponent({ onOpenApp }: MenuBarProps) {
   const { menuBarBackground, blurStyle, getBackgroundColor } = useThemeColors();
   const { disableShadows, setIsLocked, locale, timeMode, setTimeMode } = useAppContext();
   const { logout, suspendSession, currentUser } = useFileSystem();
@@ -49,9 +46,6 @@ function MenuBarComponent({ focusedApp, onOpenApp }: MenuBarProps) {
 
   // Panic Confirmation State
   const [panicConfirm, setPanicConfirm] = useState(false);
-
-  // Fullscreen management
-  const { toggleFullscreen: toggleFullscreenBase } = useFullscreen();
 
   const handleSystemClick = () => {
     const now = Date.now();
@@ -94,131 +88,6 @@ function MenuBarComponent({ focusedApp, onOpenApp }: MenuBarProps) {
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, [locale, timeMode]);
-
-  // Get the menu config for the focused app
-  const activeApp = focusedApp ? getApp(focusedApp) : getApp('finder');
-  const appConfig = {
-    name: activeApp?.name || 'Finder',
-    menus: activeApp?.menu?.menus || ['File', 'Edit', 'View', 'Go', 'Window', 'Help'],
-    items: activeApp?.menu?.items
-  };
-
-  const menuNameToKey: Record<string, string> = {
-    'File': 'menubar.menus.file',
-    'Shell': 'menubar.menus.shell',
-    'Edit': 'menubar.menus.edit',
-    'Format': 'menubar.menus.format',
-    'Song': 'menubar.menus.song',
-    'View': 'menubar.menus.view',
-    'Go': 'menubar.menus.go',
-    'Controls': 'menubar.menus.controls',
-    'Window': 'menubar.menus.window',
-    'Help': 'menubar.menus.help',
-    'Image': 'menubar.menus.image',
-    'Tools': 'menubar.menus.tools',
-    'Conversations': 'menubar.menus.conversations',
-    'Store': 'menubar.menus.store',
-    'History': 'menubar.menus.history',
-    'Bookmarks': 'menubar.menus.bookmarks',
-    'Mailbox': 'menubar.menus.mailbox',
-    'Message': 'menubar.menus.message'
-  };
-
-  const getMenuDisplayName = (menuName: string) => {
-    const key = menuNameToKey[menuName];
-    return key ? t(key) : menuName;
-  };
-
-  // Add "DEV Center" to Finder menus if devMode is enabled
-  const menuLabels = appConfig.menus;
-
-  // Render dummy menu content for now, can be expanded to be real later
-  const renderMenuContent = (menuName: string) => {
-    // 1. Render App-Specific Custom Items
-    if (appConfig.items && appConfig.items[menuName]) {
-      return (
-        <>
-          {appConfig.items[menuName].map((item, idx) => {
-            if (item.type === 'separator') {
-              return <MenubarSeparator key={idx} />;
-            }
-
-            const label = item.labelKey
-              ? t(item.labelKey, { appName: appConfig.name })
-              : (item.label ?? '');
-
-            return (
-              <MenubarItem
-                key={idx}
-                disabled={item.disabled}
-                onClick={() => {
-                  if (item.action) {
-                    window.dispatchEvent(new CustomEvent('app-menu-action', {
-                      detail: {
-                        action: item.action,
-                        appId: activeApp?.id
-                      }
-                    }));
-                  }
-                }}
-              >
-                {label}
-                {item.shortcut && <MenubarShortcut>{item.shortcut}</MenubarShortcut>}
-              </MenubarItem>
-            );
-          })}
-        </>
-      );
-    }
-
-    // 2. Default Fallbacks (if no custom items provided for this menu)
-    switch (menuName) {
-      case 'File':
-        return (
-          <>
-            <MenubarItem>{t('menubar.items.newWindow')} <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
-            <MenubarItem>{t('menubar.items.closeWindow')} <MenubarShortcut>⌘W</MenubarShortcut></MenubarItem>
-          </>
-        );
-      case 'Edit':
-        return (
-          <>
-            <MenubarItem>{t('menubar.items.undo')} <MenubarShortcut>⌘Z</MenubarShortcut></MenubarItem>
-            <MenubarItem>{t('menubar.items.redo')} <MenubarShortcut>⇧⌘Z</MenubarShortcut></MenubarItem>
-            <MenubarSeparator />
-            <MenubarItem>{t('menubar.items.cut')} <MenubarShortcut>⌘X</MenubarShortcut></MenubarItem>
-            <MenubarItem>{t('menubar.items.copy')} <MenubarShortcut>⌘C</MenubarShortcut></MenubarItem>
-            <MenubarItem>{t('menubar.items.paste')} <MenubarShortcut>⌘V</MenubarShortcut></MenubarItem>
-            <MenubarItem>{t('menubar.items.selectAll')} <MenubarShortcut>⌘A</MenubarShortcut></MenubarItem>
-          </>
-        );
-      case 'View':
-        return (
-          <>
-            <MenubarItem>{t('menubar.items.reload')} <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem>
-            <MenubarItem onClick={toggleFullscreenBase}>{t('menubar.items.toggleFullscreen')} <MenubarShortcut>F11</MenubarShortcut></MenubarItem>
-          </>
-        );
-      case 'Window':
-        return (
-          <>
-            <MenubarItem>{t('menubar.items.minimize')} <MenubarShortcut>⌘M</MenubarShortcut></MenubarItem>
-            <MenubarItem>{t('menubar.items.bringAllToFront')}</MenubarItem>
-          </>
-        );
-      case 'Help':
-        return (
-          <>
-            <MenubarItem>{t('menubar.help.appHelp', { appName: appConfig.name })}</MenubarItem>
-          </>
-        );
-      default:
-        return (
-          <MenubarItem disabled>{t('menubar.default.featureNotImplemented')}</MenubarItem>
-        );
-    }
-  };
-
 
   return (
     <div

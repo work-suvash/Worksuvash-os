@@ -19,7 +19,7 @@ enum IntroStep {
 export function IntroSequence({ onComplete }: IntroSequenceProps) {
   const { t } = useI18n();
   const [step, setStep] = useState<IntroStep>(IntroStep.INIT);
-  const [canSkip, setCanSkip] = useState(false);
+  const canSkip = false;
 
   // Handle skip functionality (ESC, Space, or Click during logo)
   const handleSkip = useCallback(() => {
