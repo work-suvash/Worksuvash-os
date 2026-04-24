@@ -1,0 +1,1 @@
+import{j as i,f as t}from"./index-DjNp--GL.js";function m({children:s,minItemWidth:e=120,className:r,gap:a=3}){return i.jsx("div",{className:t("grid",r),style:{gridTemplateColumns:`repeat(auto-fill, minmax(${e}px, 1fr))`,gap:`${a*4}px`},children:s})}export{m as R};

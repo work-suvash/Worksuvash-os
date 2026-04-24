@@ -214,6 +214,15 @@
   }
 }
 
+/* Ensure root element takes full dimensions */
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 /* Re-enable selection for inputs and text areas */
 input,
 textarea,
@@ -371,6 +380,79 @@ html {
 :root[data-disable-gradients="true"] .bg-gradient-to-bl,
 :root[data-disable-gradients="true"] .bg-gradient-to-tl {
   background-color: var(--accent-user) !important;
+}
+
+/* ====================
+   FULLSCREEN FIXES
+   ==================== */
+
+/* Standard fullscreen API */
+:fullscreen {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:fullscreen body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:fullscreen html {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:fullscreen #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+/* Webkit fullscreen support */
+:-webkit-full-screen {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:-webkit-full-screen body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:-webkit-full-screen html {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:-webkit-full-screen #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+/* Mozilla fullscreen support */
+:-moz-full-screen {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:-moz-full-screen body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:-moz-full-screen html {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+:-moz-full-screen #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
 }
 
 /* Music Visualization Animation */
